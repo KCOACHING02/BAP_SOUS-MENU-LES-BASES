@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Les Bases — Brille & Vibre</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: #FAF6F0;
+      font-family: 'DM Sans', sans-serif;
+      color: #1C1812;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    h1 em {
+      color: #C9A96E;
+      font-style: italic;
+    }
+
+    .subtitle {
+      color: #7A6A55;
+      font-size: 16px;
+      margin-bottom: 50px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: #FDF9F4;
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 14px;
+      padding: 28px;
+      text-align: left;
+      text-decoration: none;
+      color: #1C1812;
+      transition: all .3s ease;
+      display: block;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #C9A96E;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #7A6A55;
+      margin-bottom: 20px;
+    }
+
+    .btn-card {
+      color: #C9A96E;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #7A6A55;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Les <em>Bases</em></h1>
+    <p class="subtitle">Les fondations essentielles pour comprendre, créer et communiquer avec clarté.</p>
+
+    <div class="grid">
+
+      <a href="bases-marketing-digital.html" class="card">
+        <h3>Les bases du marketing digital</h3>
+        <p>Comprendre comment fonctionne réellement le digital : visibilité, confiance, conversion.</p>
+        <span class="btn-card">Accéder →</span>
+      </a>
+
+      <a href="bases-bio.html" class="card">
+        <h3>Ta bio</h3>
+        <p>Créer une bio claire, magnétique et orientée transformation.</p>
+        <span class="btn-card">Accéder →</span>
+      </a>
+
+      <a href="bases-hooks.html" class="card">
+        <h3>Tes hooks</h3>
+        <p>Capturer l’attention dès les premières secondes avec des hooks puissants.</p>
+        <span class="btn-card">Accéder →</span>
+      </a>
+
+      <a href="bases-legendes.html" class="card">
+        <h3>Tes légendes</h3>
+        <p>Écrire des légendes structurées, émotionnelles et convertissantes.</p>
+        <span class="btn-card">Accéder →</span>
+      </a>
+
+    </div>
+
+  </div>
+
+  <footer>
+    © Brille & Vibre — Les Bases
+  </footer>
+
+</body>
+</html>
