@@ -2,121 +2,417 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Les Bases — Brille & Vibre</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- FONTS -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --gold:       #C9A84C;
+      --gold-light: #E8CC80;
+      --gold-pale:  #F5EDD4;
+      --cream:      #FAF6EF;
+      --text:       #3A2E24;
+      --text-light: #8C7560;
+      --shadow:     rgba(90,60,30,0.14);
+    }
+
     body {
-      background: #FAF6F0;
       font-family: 'DM Sans', sans-serif;
-      color: #1C1812;
-      margin: 0;
-      padding: 40px 20px;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
     }
-    .container {
-      max-width: 900px;
+
+    /* Warm glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: min(700px, 130vw);
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.18) 0%, transparent 68%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
       margin: 0 auto;
-      text-align: center;
+      padding: clamp(28px,6vw,52px) clamp(20px,5vw,36px) 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-    h1 em {
-      color: #C9A96E;
-      font-style: italic;
-    }
-    .subtitle {
-      color: #7A6A55;
-      font-size: 16px;
-      margin-bottom: 50px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
-    .card {
-      background: #FDF9F4;
-      border: 1px solid rgba(201,169,110,0.25);
-      border-radius: 14px;
-      padding: 28px;
-      text-align: left;
-      text-decoration: none;
-      color: #1C1812;
-      transition: all .3s ease;
-      display: block;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: #C9A96E;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    }
-    .card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    .card p {
-      font-size: 15px;
-      color: #7A6A55;
-      margin-bottom: 20px;
-    }
-    .btn-card {
-      color: #C9A96E;
+
+    /* ── Back button ── */
+    .back-btn {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.85rem;
       font-weight: 600;
-      font-size: 15px;
+      color: var(--text-light);
+      text-decoration: none;
+      margin-bottom: clamp(20px,5vw,32px);
+      padding: 0.45rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: rgba(245,237,212,0.5);
+      transition: all 0.2s ease;
+      opacity: 0;
+      animation: riseIn 0.5s ease 0.05s forwards;
     }
-    footer {
-      margin-top: 60px;
+    .back-btn:hover {
+      background: var(--gold-pale);
+      border-color: var(--gold);
+      color: var(--text);
+      transform: translateX(-2px);
+    }
+    .back-btn svg { width: 14px; height: 14px; stroke: currentColor; flex-shrink: 0; }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: clamp(28px,6vw,44px);
+      opacity: 0;
+      animation: riseIn 0.8s cubic-bezier(.22,.68,0,1.2) 0.15s forwards;
+    }
+
+    .logo-ring {
+      position: relative;
+      width: clamp(72px,18vw,96px);
+      height: clamp(72px,18vw,96px);
+      margin-bottom: 18px;
+    }
+    .logo-ring::before {
+      content: '';
+      position: absolute; inset: -5px;
+      border-radius: 50%;
+      background: conic-gradient(var(--gold), var(--gold-light), var(--gold-pale), var(--gold), var(--gold-light), var(--gold));
+      animation: spin 8s linear infinite;
+    }
+    .logo-ring::after {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: 50%;
+      background: var(--cream);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .logo-img {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover; object-position: top;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12px,3vw,14px);
+      font-style: italic;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px,7.5vw,40px);
+      font-weight: 900;
+      line-height: 1.1;
       text-align: center;
-      color: #7A6A55;
-      font-size: 14px;
+    }
+    .page-title em { font-style: italic; color: var(--gold); }
+
+    .subtitle {
+      margin-top: 9px;
+      font-size: clamp(13px,3.2vw,15px);
+      color: var(--text-light);
+      text-align: center;
+      line-height: 1.55;
+      max-width: 340px;
+    }
+
+    .divider {
+      width: 44px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 2px;
+      margin: 13px auto 0;
+    }
+
+    /* ── Cards grid ── */
+    .grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(12px,3vw,18px);
+    }
+
+    /* ── Card ── */
+    .card {
+      position: relative;
+      background: #fff;
+      border-radius: 20px;
+      padding: clamp(16px,4.5vw,24px) clamp(14px,3.8vw,20px);
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: 0 2px 8px var(--shadow), 0 8px 24px rgba(90,60,30,0.07);
+      border: 1px solid rgba(201,168,76,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transition: transform 0.28s cubic-bezier(.22,.68,0,1.3), box-shadow 0.28s ease, border-color 0.28s ease;
+    }
+
+    /* Shimmer */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.55), transparent);
+      transition: left 0.5s ease;
+      pointer-events: none;
+    }
+    .card:hover::before { left: 160%; }
+
+    /* Gold corner */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 55px; height: 55px;
+      background: conic-gradient(from 135deg, var(--gold-pale), transparent 60%);
+      border-radius: 0 20px 0 0;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 4px 16px var(--shadow), 0 16px 40px rgba(90,60,30,0.12); border-color: rgba(201,168,76,0.5); }
+    .card:hover::after { opacity: 1; }
+    .card:active { transform: scale(0.97); transition-duration: 0.1s; }
+
+    /* Staggered animations */
+    .card:nth-child(1)  { animation: riseIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.35s forwards; }
+    .card:nth-child(2)  { animation: riseIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.46s forwards; }
+    .card:nth-child(3)  { animation: riseIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.57s forwards; }
+    .card:nth-child(4)  { animation: riseIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.68s forwards; }
+    .card:nth-child(5)  { animation: riseIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.79s forwards; }
+    .card:nth-child(6)  { animation: riseIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.90s forwards; }
+
+    /* Wide card (spans 2 cols) */
+    .card.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 16px; }
+    .card.wide .card-label { font-size: clamp(14px,3.8vw,17px); }
+    .card.wide .card-desc  { font-size: clamp(11px,2.8vw,13px); margin-bottom: 0; }
+
+    /* Icon */
+    .icon-wrap {
+      width: clamp(38px,9vw,48px);
+      height: clamp(38px,9vw,48px);
+      background: var(--gold-pale);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s, transform 0.3s;
+      position: relative; z-index: 1;
+    }
+    .card:hover .icon-wrap { background: linear-gradient(135deg, var(--gold), var(--gold-light)); transform: scale(1.1) rotate(-4deg); }
+    .icon-wrap svg { width: clamp(16px,4.2vw,21px); height: clamp(16px,4.2vw,21px); stroke: var(--gold); transition: stroke 0.3s; }
+    .card:hover .icon-wrap svg { stroke: #fff; }
+
+    .card-body { display: flex; flex-direction: column; gap: 6px; flex: 1; position: relative; z-index: 1; }
+
+    .card-label {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(13px,3.4vw,16px);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: clamp(10px,2.5vw,12px);
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .card-arrow {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: clamp(9px,2.2vw,11px);
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      transform: translateX(-5px);
+      white-space: nowrap;
+    }
+    .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+    .card-arrow svg { width: 11px; height: 11px; stroke: var(--gold); flex-shrink: 0; }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: clamp(28px,6vw,40px);
+      font-size: clamp(11px,2.6vw,12px);
+      color: var(--text-light);
+      font-style: italic;
+      opacity: 0;
+      animation: riseIn 0.6s ease 1.1s forwards;
+      text-align: center;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .card, .header, .footer, .back-btn { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Les <em>Bases</em></h1>
-    <p class="subtitle">Les fondations essentielles pour comprendre, créer et communiquer avec clarté.</p>
-    <div class="grid">
-      <a href="https://kcoaching02.github.io/BAO_PERSONA/" class="card" target="_blank">
-        <h3>Trouve ton client idéal</h3>
-        <p>Définis précisément ton persona en quelques clics et génère un profil complet pour parler à la bonne personne, avec les bons mots.</p>
-        <span class="btn-card">Accéder →</span>
-      </a>
-      <a href="https://kcoaching02.github.io/BAO_LES-BASES-DU-MARKETING/" class="card" target="_blank">
-        <h3>Les bases du marketing digital</h3>
-        <p>Comprendre comment fonctionne réellement le digital : visibilité, confiance, conversion.</p>
-        <span class="btn-card">Accéder →</span>
-      </a>
-      <a href="https://kcoaching02.github.io/BAO_BIO/" class="card">
-        <h3>Ta bio</h3>
-        <p>Créer une bio claire, magnétique et orientée transformation.</p>
-        <span class="btn-card">Accéder →</span>
-      </a>
-      <a href="https://kcoaching02.github.io/BAO_HOOK/" class="card" target="_blank">
-        <h3>Tes hooks</h3>
-        <p>Capturer l'attention dès les premières secondes avec des hooks puissants.</p>
-        <span class="btn-card">Accéder →</span>
-      </a>
-      <a href="https://kcoaching02.github.io/BAO_LEGENDE/" class="card">
-        <h3>Tes légendes</h3>
-        <p>Écrire des légendes structurées, émotionnelles et convertissantes.</p>
-        <span class="btn-card">Accéder →</span>
-      </a>
-      <!-- Nouveau bloc ajouté -->
-      <a href="https://kcoaching02.github.io/BAO_VISIBILITE/" class="card" target="_blank">
-        <h3>Les bases de la visibilité</h3>
-        <p>Découvre ce qui fait réellement des vues sur Instagram & TikTok en 2026 : émotions, accroches, rétention et cohérence.</p>
-        <span class="btn-card">Accéder →</span>
-      </a>
+
+<div class="wrapper">
+
+  <!-- Back -->
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Retour à la Boîte à Outils
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-ring">
+      <img src="menu.jpg" alt="Brille & Vibre" class="logo-img">
     </div>
+    <p class="brand">Brille &amp; Vibre</p>
+    <h1 class="page-title">Les <em>Bases</em></h1>
+    <p class="subtitle">Les fondations essentielles pour comprendre, créer et communiquer avec clarté.</p>
+    <div class="divider"></div>
   </div>
-  <footer>
-    © Brille & Vibre — Les Bases
-  </footer>
+
+  <!-- Grid -->
+  <div class="grid">
+
+    <!-- 1 -->
+    <a href="https://kcoaching02.github.io/BAO_PERSONA/" class="card" target="_blank">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Client idéal</div>
+        <div class="card-desc">Définis ton persona et parle aux bonnes personnes.</div>
+        <div class="card-arrow">Accéder <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <!-- 2 -->
+    <a href="https://kcoaching02.github.io/BAO_LES-BASES-DU-MARKETING/" class="card" target="_blank">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 20h20M6 20V10l6-6 6 6v10"/>
+          <rect x="9" y="14" width="6" height="6"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Marketing digital</div>
+        <div class="card-desc">Visibilité, confiance et conversion.</div>
+        <div class="card-arrow">Accéder <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <!-- 3 -->
+    <a href="https://kcoaching02.github.io/BAO_BIO/" class="card" target="_blank">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Ta bio</div>
+        <div class="card-desc">Bio claire, magnétique et orientée transformation.</div>
+        <div class="card-arrow">Accéder <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <!-- 4 -->
+    <a href="https://kcoaching02.github.io/BAO_HOOK/" class="card" target="_blank">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Tes hooks</div>
+        <div class="card-desc">Capture l'attention dès les premières secondes.</div>
+        <div class="card-arrow">Accéder <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <!-- 5 -->
+    <a href="https://kcoaching02.github.io/BAO_LEGENDE/" class="card" target="_blank">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Tes légendes</div>
+        <div class="card-desc">Légendes structurées, émotionnelles, convertissantes.</div>
+        <div class="card-arrow">Accéder <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <!-- 6 — wide -->
+    <a href="https://kcoaching02.github.io/BAO_VISIBILITE/" class="card wide" target="_blank">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">Bases de la visibilité</div>
+        <div class="card-desc">Ce qui fait réellement des vues sur Instagram & TikTok en 2026 : émotions, accroches, rétention et cohérence.</div>
+        <div class="card-arrow">Accéder <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+  </div>
+
+  <p class="footer">brillevibre.com &nbsp;·&nbsp; © 2025</p>
+
+</div>
+
 </body>
 </html>
